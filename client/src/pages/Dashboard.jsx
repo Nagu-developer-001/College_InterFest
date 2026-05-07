@@ -111,7 +111,7 @@ const Dashboard = () => {
                 </div>
                 
                 <div style={{ marginTop: 'auto', marginBottom: '2.5rem' }}>
-                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748b', marginBottom: '1rem' }}>Voice or Text Instruction</label>
+                    <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748b', marginBottom: '1rem' }}>Text Instruction</label>
                     <textarea 
                         value={input} 
                         onChange={(e) => setInput(e.target.value)} 
