@@ -109,3 +109,15 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+/* Target the Spline logo element inside the viewer and hide it */
+spline-viewer #logo {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Alternative catch-all in case their class names shift slightly */
+a[href*="spline.design"] {
+    display: none !important;
+}
