@@ -19,7 +19,7 @@ const seedUser = async () => {
         });
 
         await newUser.save();
-        console.log(`SUCCESS: User '${email}' created with 'password123'`);
+        console.log("SUCCESS: User 'admin@test.com' created with 'password123'");
         process.exit();
     } catch (err) {
         console.error("Seed failed:", err);
