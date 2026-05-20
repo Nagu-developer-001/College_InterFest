@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hackathon</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#0a1f44,#081733,#050d1f);
+    background-size:300% 300%;
+    animation:backgroundMove 18s ease infinite;
+    color:white;
+    height:100vh;
+    overflow:hidden;
+}
+
+@keyframes backgroundMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+nav{
+    height:6rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 50px;
+    background:rgba(10,25,60,0.6);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid rgba(0,191,255,0.4);
+}
+
+.nav-left{display:flex;align-items:center;gap:20px;}
+.nav-right{display:flex;gap:20px;}
+
+.nav-left img{
+    width:85px;height:55px;border-radius:30%;
+}
+
+.nav-center{
+    position:absolute;left:50%;transform:translateX(-50%);
+}
+
+.college-name{
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:3px;
+    color:#00bfff;
+    animation:pulseGlow 6s ease-in-out infinite;
+}
+
+@keyframes pulseGlow{
+    0%,100%{opacity:0.7;text-shadow:0 0 5px #00bfff;}
+    50%{opacity:1;text-shadow:0 0 25px #00bfff;}
+}
+
+.rules-btn{
+    background:linear-gradient(145deg,#0f234b,#081432);
+    border:1px solid rgba(0,191,255,0.5);
+    padding:10px 28px;
+    color:white;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.rules-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px #00bfff;
+}
+
+.hero{
+    position:relative;
+    height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+}
+
+#matrixCanvas{
+    position:absolute;
+    width:100%;height:100%;
+    z-index:0;
+    opacity:.18;
+}
+
+.hero-content{position:relative;z-index:2;}
+
+.hero h1{
+    font-family:'Orbitron';
+    font-size:90px;
+    letter-spacing:10px;
+    background:linear-gradient(90deg,#00bfff,#fff,#ff2a2a);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.overlay{
+    position:fixed;
+    width:100%;height:100%;
+    top:0;left:0;
+    backdrop-filter:blur(6px);
+    background:rgba(0,0,0,0.5);
+    display:none;
+    opacity:0;
+    transition:.4s;
+    z-index:5;
+}
+
+.modal{
+    position:fixed;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(.9);
+    width:70%;max-width:900px;
+    padding:40px;
+    border-radius:20px;
+    background:rgba(10,20,40,.15);
+    backdrop-filter:blur(10px);
+    border:1px solid rgba(0,191,255,.4);
+    box-shadow:0 0 45px rgba(0,191,255,.5);
+    display:none;
+    transition:.4s;
+    z-index:10;
+}
+
+.modal.active{transform:translate(-50%,-50%) scale(1);}
+
+.modal button{
+    margin-top:20px;
+    padding:10px 25px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,.4);
+    background:rgba(255,255,255,.15);
+    color:white;
+    cursor:pointer;
+}
+
+.judges-container{
+    display:flex;
+    gap:30px;
+    margin-top:20px;
+}
+
+.judge-card{
+    flex:1;
+    padding:25px;
+    border-radius:18px;
+    background:rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    border:1px solid rgba(0,191,255,.4);
+}
+.judge-img{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:15px;
+    border:3px solid rgba(0,191,255,0.6);
+    box-shadow:0 0 20px rgba(0,191,255,0.6);
+    transition:0.3s ease;
+}
+
+.judge-img:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 30px rgba(0,191,255,0.9);
+}
+
+.judge-card{
+    text-align:center;   /* center everything */
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-left">
+        <img src="innovesta_logo_2.png">
+        <img src="csi_innovesta.jpg">
+        <img src="innovesta_logo_1.png">
+    </div>
+
+    <div class="nav-center">
+        <h3 class="college-name">SURANA COLLEGE (AUTONOMOUS)</h3>
+    </div>
+
+    <div class="nav-right">
+        <button class="rules-btn" onclick="openModal()">Rules & Regulations</button>
+        <button class="rules-btn" onclick="openJudges()">Judges</button>
+    </div>
+</nav>
+
+<div class="hero">
+<canvas id="matrixCanvas"></canvas>
+
+<div class="hero-content">
+    <h2>INNOVESTA 2K26</h2>
+    <h1>HACKATHON</h1>
+</div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<!-- RULES MODAL -->
+<div class="modal" id="modal">
+    <h2>Rules & Regulations</h2>
+    <ul>
+        <li>Each team will have 10 minutes to present.</li>
+        <li>Includes live demo + report + Q&A.</li>
+        <li>Report must include Problem, Approach, Tech Stack, Architecture & Results.</li>
+    </ul>
+    <button onclick="closeModal()">Close</button>
+</div>
+
+<!-- JUDGES MODAL -->
+<div class="modal" id="judgesModal">
+    <h2>Judges Panel</h2>
+
+    <div class="judges-container">
+        
+        <div class="judge-card">
+            <img src="WhatsApp Image 2026-02-27 at 2.45.04 PM.jpeg" class="judge-img">
+            <h3>Security Operations Engineer</h3>
+            <li>Monitor security alerts (Microsoft Sentinel, Microsoft Defender)</li>
+            <li>Investigate suspicious activities</li>
+            <li>Respond to real cyber incidents</li>
+            <li>Manage privileged access (Secret Server)</li>
+            <li>Create SOPs for incident response</li>
+            <li>Analyze unusual network behavior</li>
+            <li>Identify whether it’s a bug, user mistake, or cyber attack</li>            
+        </div>
+
+        <div class="judge-card">
+            <img src="WhatsApp Image 2026-02-27 at 2.45.05 PM.jpeg" class="judge-img">
+            <h3></h3>
+            <p></p>
+            <p></p>
+        </div>
+
+    </div>
+
+    <button onclick="closeJudges()">Close</button>
+    <button></button>
+</div>
+
+<script>
+const overlay=document.getElementById("overlay");
+const hero=document.querySelector(".hero");
+
+function openModal(){
+    overlay.style.display="block";
+    document.getElementById("modal").style.display="block";
+    setTimeout(()=>{
+        overlay.style.opacity="1";
+        document.getElementById("modal").classList.add("active");
+    },10);
+}
+
+function closeModal(){
+    overlay.style.opacity="0";
+    document.getElementById("modal").classList.remove("active");
+    setTimeout(()=>{
+        overlay.style.display="none";
+        document.getElementById("modal").style.display="none";
+    },400);
+}
+
+function openJudges(){
+    overlay.style.display="block";
+    document.getElementById("judgesModal").style.display="block";
+    setTimeout(()=>{
+        overlay.style.opacity="1";
+        document.getElementById("judgesModal").classList.add("active");
+    },10);
+}
+
+function closeJudges(){
+    overlay.style.opacity="0";
+    document.getElementById("judgesModal").classList.remove("active");
+    setTimeout(()=>{
+        overlay.style.display="none";
+        document.getElementById("judgesModal").style.display="none";
+    },400);
+}
+
+/* MATRIX */
+const canvas=document.getElementById("matrixCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=document.querySelector(".hero").offsetHeight;
+
+const letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize=16;
+const columns=canvas.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
+
+function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.05)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00bfff";
+    ctx.font=fontSize+"px monospace";
+
+    for(let i=0;i<drops.length;i++){
+        const text=letters[Math.floor(Math.random()*letters.length)];
+        ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+        if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+            drops[i]=0;
+        drops[i]++;
+    }
+}
+setInterval(draw,50);
+</script>
+
+</body>
+</html>
