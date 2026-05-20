@@ -1,0 +1,14 @@
+# Security
+.env
+.env.local
+
+# Dependencies
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Logs and OS files
+npm-debug.log*
+.DS_Store
